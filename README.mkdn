@@ -1,20 +1,32 @@
 # NAME
 
-File::Stamped -
+File::Stamped - time stamped log file
 
 # SYNOPSIS
 
-  use File::Stamped;
+    use File::Stamped;
+    my $fh = File::Stamped->new(pattern => '/tmp/log.%Y%m%d.txt');
+    $fh->print("OK\n");
+
+    # with Log::Minimal
+    use Log::Minimal;
+    my $fh = File::Stamped->new(pattern => '/tmp/log.%Y%m%d.txt');
+    local $Log::Minimal::PRINT = sub {
+        my ( $time, $type, $message, $trace) = @_;
+        $fh->print("$time [$type] $message at $trace\n");
+    };
 
 # DESCRIPTION
 
-File::Stamped is
+File::Stamped is utility for time stamped log file.
 
 # AUTHOR
 
 Tokuhiro Matsuno <tokuhirom AAJKLFJEF GMAIL COM>
 
 # SEE ALSO
+
+[Log::Dispatch::File::Stamped](http://search.cpan.org/perldoc?Log::Dispatch::File::Stamped)
 
 # LICENSE
 
