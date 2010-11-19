@@ -11,17 +11,33 @@ sub new {
     my $class = shift;
     my %args = @_==1?%{$_[0]}:@_;
     $args{pattern} || Carp::croak "missing mandatory parameter 'pattern'";
-    bless {
+    my $self = bless \do { local *FH }, $class;
+    tie *$self, $class, $self;
+    %args = (
         autoflush         => 1,
         close_after_write => 1,
         iomode            => '>>:utf8',
         %args
-    }, $class;
+    );
+    for my $k (keys %args) {
+        *$self->{$k} = $args{$k};
+    }
+    return $self;
 }
+
+sub TIEHANDLE {
+    (
+        ( defined( $_[1] ) && UNIVERSAL::isa( $_[1], __PACKAGE__ ) )
+        ? $_[1]
+        : shift->new(@_)
+    );
+}
+
+sub PRINT     { shift->print(@_) }
 
 sub _gen_filename {
     my $self = shift;
-    return POSIX::strftime($self->{pattern}, localtime());
+    return POSIX::strftime(*$self->{pattern}, localtime());
 }
 
 sub print {
@@ -29,29 +45,29 @@ sub print {
 
     my $fname = $self->_gen_filename();
     my $fh;
-    if ($self->{fh}) {
-        if ($fname eq $self->{fname} && $self->{pid}==$$) {
-            $fh = delete $self->{fh};
+    if (*$self->{fh}) {
+        if ($fname eq *$self->{fname} && *$self->{pid}==$$) {
+            $fh = delete *$self->{fh};
         } else {
-            my $fh = delete $self->{fh};
+            my $fh = delete *$self->{fh};
             close $fh if $fh;
         }
     }
     unless ($fh) {
-        open $fh, $self->{iomode}, $fname or die "Cannot open file($fname): $!";
-        if ($self->{autoflush}) {
+        open $fh, *$self->{iomode}, $fname or die "Cannot open file($fname): $!";
+        if (*$self->{autoflush}) {
             my $saver = SelectSaver->new($fh);
             $|=1;
         }
     }
     print {$fh} @_
         or die "Cannot write to $fname: $!";
-    if ($self->{close_after_write}) {
+    if (*$self->{close_after_write}) {
         close $fh;
     } else {
-        $self->{fh}    = $fh;
-        $self->{fname} = $fname;
-        $self->{pid}   = $$;
+        *$self->{fh}    = $fh;
+        *$self->{fname} = $fname;
+        *$self->{pid}   = $$;
     }
 }
 
@@ -75,7 +91,7 @@ File::Stamped - time stamped log file
     my $fh = File::Stamped->new(pattern => '/var/myapp.log.%Y%m%d.txt');
     local $Log::Minimal::PRINT = sub {
         my ( $time, $type, $message, $trace) = @_;
-        $fh->print("$time [$type] $message at $trace\n");
+        print {$fh} "$time [$type] $message at $trace\n";
     };
 
 =head1 DESCRIPTION

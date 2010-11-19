@@ -11,7 +11,7 @@ my $pattern = File::Spec->catdir($dir, 'foo.%Y%m%d.log');
 
 my $f = File::Stamped->new(pattern => $pattern);
 $f->print("OK\n");
-$f->print("OK2\n");
+print {$f} "OK2\n";
 
 my $fname = do {
     my $fname;
