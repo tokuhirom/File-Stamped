@@ -67,12 +67,12 @@ File::Stamped - time stamped log file
 =head1 SYNOPSIS
 
     use File::Stamped;
-    my $fh = File::Stamped->new(pattern => '/tmp/log.%Y%m%d.txt');
+    my $fh = File::Stamped->new(pattern => '/var/myapp.log.%Y%m%d.txt');
     $fh->print("OK\n");
 
     # with Log::Minimal
     use Log::Minimal;
-    my $fh = File::Stamped->new(pattern => '/tmp/log.%Y%m%d.txt');
+    my $fh = File::Stamped->new(pattern => '/var/myapp.log.%Y%m%d.txt');
     local $Log::Minimal::PRINT = sub {
         my ( $time, $type, $message, $trace) = @_;
         $fh->print("$time [$type] $message at $trace\n");
