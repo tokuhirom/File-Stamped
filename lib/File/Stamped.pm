@@ -98,6 +98,43 @@ File::Stamped - time stamped log file
 
 File::Stamped is utility for time stamped log file.
 
+=head1 METHODS
+
+=over 4
+
+=item my $fh = File::Stamped->new(%args);
+
+This method creates new instance of File::Stamped. The arguments are followings.
+
+
+=over 4
+
+=item pattern : Str
+
+This is file name pattern. It is the pattern for filename. The format is POSIX::strftime(), see also L<POSIX>.
+
+=item close_after_write : Bool
+
+Default value is 1.
+
+=item iomode: Str
+
+This is IO mode for opening file.
+
+Default value is '>>:utf8'.
+
+=item autoflush: Bool
+
+This attribute changes $|.
+
+=back
+
+=item $fh->print($str: Str)
+
+This method prints the $str to the file.
+
+=back
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF GMAIL COME<gt>
