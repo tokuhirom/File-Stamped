@@ -83,12 +83,12 @@ File::Stamped - time stamped log file
 =head1 SYNOPSIS
 
     use File::Stamped;
-    my $fh = File::Stamped->new(pattern => '/var/myapp.log.%Y%m%d.txt');
+    my $fh = File::Stamped->new(pattern => '/var/log/myapp.log.%Y%m%d.txt');
     $fh->print("OK\n");
 
     # with Log::Minimal
     use Log::Minimal;
-    my $fh = File::Stamped->new(pattern => '/var/myapp.log.%Y%m%d.txt');
+    my $fh = File::Stamped->new(pattern => '/var/log/myapp.log.%Y%m%d.txt');
     local $Log::Minimal::PRINT = sub {
         my ( $time, $type, $message, $trace) = @_;
         print {$fh} "$time [$type] $message at $trace\n";
@@ -97,6 +97,43 @@ File::Stamped - time stamped log file
 =head1 DESCRIPTION
 
 File::Stamped is utility for time stamped log file.
+
+=head1 METHODS
+
+=over 4
+
+=item my $fh = File::Stamped->new(%args);
+
+This method creates new instance of File::Stamped. The arguments are followings.
+
+
+=over 4
+
+=item pattern : Str
+
+This is file name pattern. It is the pattern for filename. The format is POSIX::strftime(), see also L<POSIX>.
+
+=item close_after_write : Bool
+
+Default value is 1.
+
+=item iomode: Str
+
+This is IO mode for opening file.
+
+Default value is '>>:utf8'.
+
+=item autoflush: Bool
+
+This attribute changes $|.
+
+=back
+
+=item $fh->print($str: Str)
+
+This method prints the $str to the file.
+
+=back
 
 =head1 AUTHOR
 
