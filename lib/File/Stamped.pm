@@ -17,6 +17,7 @@ sub new {
         autoflush         => 1,
         close_after_write => 1,
         iomode            => '>>:utf8',
+        rotationtime      => 1,
         %args
     );
     for my $k (keys %args) {
@@ -37,7 +38,11 @@ sub PRINT     { shift->print(@_) }
 
 sub _gen_filename {
     my $self = shift;
-    return POSIX::strftime(*$self->{pattern}, localtime());
+    my $time = time();
+    if ( $time > 1 ) {
+        $time = $time - $time % *$self->{rotationtime};
+    }
+    return POSIX::strftime(*$self->{pattern}, localtime($time));
 }
 
 sub print {
@@ -126,6 +131,10 @@ Default value is '>>:utf8'.
 =item autoflush: Bool
 
 This attribute changes $|.
+
+=item rotationtime: Int
+
+The time between log file generates in seconds. Default value is 1.
 
 =back
 
