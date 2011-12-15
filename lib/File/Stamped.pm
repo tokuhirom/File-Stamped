@@ -39,7 +39,9 @@ sub PRINT     { shift->print(@_) }
 sub _gen_filename {
     my $self = shift;
     my $time = time();
-    $time = $time - $time % *$self->{rotationtime};
+    if ( $time > 1 ) {
+        $time = $time - $time % *$self->{rotationtime};
+    }
     return POSIX::strftime(*$self->{pattern}, localtime($time));
 }
 
