@@ -34,3 +34,7 @@ API
 URL
 URI
 db
+Str
+filename
+iomode
+rotationtime

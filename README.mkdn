@@ -24,31 +24,35 @@ File::Stamped is utility for time stamped log file.
 
 - my $fh = File::Stamped->new(%args);
 
-This method creates new instance of File::Stamped. The arguments are followings.
+    This method creates new instance of File::Stamped. The arguments are followings.
 
 
 
     - pattern : Str
 
-    This is file name pattern. It is the pattern for filename. The format is POSIX::strftime(), see also [POSIX](http://search.cpan.org/perldoc?POSIX).
+        This is file name pattern. It is the pattern for filename. The format is POSIX::strftime(), see also [POSIX](http://search.cpan.org/perldoc?POSIX).
 
-    - close_after_write : Bool
+    - close\_after\_write : Bool
 
-    Default value is 1.
+        Default value is 1.
 
     - iomode: Str
 
-    This is IO mode for opening file.
+        This is IO mode for opening file.
 
-    Default value is '>>:utf8'.
+        Default value is '>>:utf8'.
 
     - autoflush: Bool
 
-    This attribute changes $|.
+        This attribute changes $|.
+
+    - rotationtime: Int
+
+        The time between log file generates in seconds. Default value is 1.
 
 - $fh->print($str: Str)
 
-This method prints the $str to the file.
+    This method prints the $str to the file.
 
 # AUTHOR
 
