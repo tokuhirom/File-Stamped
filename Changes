@@ -1,5 +1,15 @@
 Revision history for Perl extension File::Stamped
 
+0.03 2013-01-20T18:59:22
+
+    [NEW FEATURE]
+    - You can specify the 'callback' to generate file name.
+      This feature makes customizable file name generation.
+      (tokuhirom)
+
+    [MISC]
+    - switched to M::B from M::I.
+
 0.02
 
         - updated docs
