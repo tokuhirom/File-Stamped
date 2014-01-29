@@ -80,6 +80,16 @@ sub print {
             my $saver = SelectSaver->new($fh);
             $|=1;
         }
+        if (my $symlink = *$self->{symlink}) {
+            if (-e $symlink) {
+                my $link = readlink $symlink;
+                die $! unless defined $link;
+                if ($link ne $fname) {
+                    unlink $symlink;
+                }
+            }
+            symlink $fname, $symlink or die $! unless -e $symlink;
+        }
     }
     print {$fh} @_
         or die "Cannot write to $fname: $!";
@@ -171,6 +181,10 @@ This attribute changes $|.
 =item rotationtime: Int
 
 The time between log file generates in seconds. Default value is 1.
+
+=item symlink: Str
+
+generate symlink file for log file.
 
 =back
 
