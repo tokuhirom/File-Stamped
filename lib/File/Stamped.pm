@@ -16,6 +16,9 @@ sub new {
     unless (exists($args{pattern}) || exists($args{callback})) {
         Carp::croak "You need to specify 'pattern' or 'callback'.";
     }
+    if (defined $args{symlink} && -e $args{symlink} && ! -l $args{symlink}) {
+        Carp::croak "File '$args{symlink}' already exists (not a symlink)"; 
+    }
     my $callback = delete($args{callback}) || _make_callback_from_pattern(delete($args{pattern}));
     my $self = bless \do { local *FH }, $class;
     tie *$self, $class, $self;
@@ -80,15 +83,14 @@ sub print {
             my $saver = SelectSaver->new($fh);
             $|=1;
         }
-        if (my $symlink = *$self->{symlink}) {
+        if (defined(my $symlink = *$self->{symlink})) {
             if (-e $symlink) {
                 my $link = readlink $symlink;
-                die $! unless defined $link;
-                if ($link ne $fname) {
+                if (defined $link && $link ne $fname) {
                     unlink $symlink;
                 }
             }
-            symlink $fname, $symlink or die $! unless -e $symlink;
+            symlink $fname, $symlink;
         }
     }
     print {$fh} @_
