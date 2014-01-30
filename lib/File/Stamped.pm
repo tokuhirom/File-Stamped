@@ -61,8 +61,8 @@ sub _make_callback_from_pattern {
     };
 }
 
-sub print {
-    my $self = shift;
+sub _output {
+    my ($self, $callback) = @_;
 
     my $fname = $self->_gen_filename();
     my $fh;
@@ -74,15 +74,9 @@ sub print {
             close $fh if $fh;
         }
     }
-    unless ($fh) {
-        open $fh, *$self->{iomode}, $fname or die "Cannot open file($fname): $!";
-        if (*$self->{autoflush}) {
-            my $saver = SelectSaver->new($fh);
-            $|=1;
-        }
-    }
-    print {$fh} @_
-        or die "Cannot write to $fname: $!";
+
+    $fh = $callback->($fh, $fname);
+
     if (*$self->{close_after_write}) {
         close $fh;
     } else {
@@ -90,6 +84,44 @@ sub print {
         *$self->{fname} = $fname;
         *$self->{pid}   = $$;
     }
+}
+
+sub print {
+    my $self = shift;
+
+    my @msg = @_;
+
+    $self->_output(sub {
+        my ($fh, $fname) = @_;
+        unless ($fh) {
+            open $fh, *$self->{iomode}, $fname or die "Cannot open file($fname): $!";
+            if (*$self->{autoflush}) {
+                my $saver = SelectSaver->new($fh);
+                $|=1;
+            }
+        }
+        print {$fh} @msg
+            or die "Cannot write to $fname: $!";
+
+        $fh;
+    });
+}
+
+sub syswrite {
+    my $self = shift;
+
+    my $msg = join '', @_;
+
+    $self->_output(sub {
+        my ($fh, $fname) = @_;
+        unless ($fh) {
+            open $fh, *$self->{iomode}, $fname or die "Cannot open file($fname): $!";
+        }
+        syswrite($fh, $msg)
+            or die "Cannot write to $fname: $!";
+
+        $fh;
+    });
 }
 
 1;
@@ -177,6 +209,11 @@ The time between log file generates in seconds. Default value is 1.
 =item $fh->print($str: Str)
 
 This method prints the $str to the file.
+
+=item $fh->syswrite($str: Str)
+
+This method prints the $str to the file.
+This method uses syswrite internally. Writing is not buffered.
 
 =back
 
