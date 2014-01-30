@@ -43,6 +43,8 @@ sub TIEHANDLE {
 
 sub PRINT     { shift->print(@_) }
 
+sub WRITE     { shift->syswrite(@_) }
+
 sub _gen_filename {
     my $self = shift;
     return *$self->{callback}->(*$self);
@@ -110,15 +112,18 @@ sub print {
 sub syswrite {
     my $self = shift;
 
-    my $msg = join '', @_;
+    my ($buf, @args) = @_;
 
     $self->_output(sub {
         my ($fh, $fname) = @_;
         unless ($fh) {
             open $fh, *$self->{iomode}, $fname or die "Cannot open file($fname): $!";
         }
-        syswrite($fh, $msg)
-            or die "Cannot write to $fname: $!";
+        my $res = @args == 0 ? CORE::syswrite($fh, $buf)
+                : @args == 1 ? CORE::syswrite($fh, $buf, $args[0])
+                : @args == 2 ? CORE::syswrite($fh, $buf, $args[0], $args[1])
+                : Carp::croak 'Too many arguments for syswrite';
+        die "Cannot write to $fname: $!" unless $res;
 
         $fh;
     });
@@ -211,6 +216,8 @@ The time between log file generates in seconds. Default value is 1.
 This method prints the $str to the file.
 
 =item $fh->syswrite($str: Str)
+=item $fh->syswrite($str: Str, $len: Int)
+=item $fh->syswrite($str: Str, $len: Int, $offset: Int)
 
 This method prints the $str to the file.
 This method uses syswrite internally. Writing is not buffered.
