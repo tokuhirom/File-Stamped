@@ -16,6 +16,9 @@ sub new {
     unless (exists($args{pattern}) || exists($args{callback})) {
         Carp::croak "You need to specify 'pattern' or 'callback'.";
     }
+    if (defined $args{symlink} && -e $args{symlink} && ! -l $args{symlink}) {
+        Carp::croak "File '$args{symlink}' already exists (not a symlink)"; 
+    }
     my $callback = delete($args{callback}) || _make_callback_from_pattern(delete($args{pattern}));
     my $self = bless \do { local *FH }, $class;
     tie *$self, $class, $self;
@@ -79,6 +82,15 @@ sub print {
         if (*$self->{autoflush}) {
             my $saver = SelectSaver->new($fh);
             $|=1;
+        }
+        if (defined(my $symlink = *$self->{symlink})) {
+            if (-e $symlink) {
+                my $link = readlink $symlink;
+                if (defined $link && $link ne $fname) {
+                    unlink $symlink;
+                }
+            }
+            symlink $fname, $symlink;
         }
     }
     print {$fh} @_
@@ -171,6 +183,10 @@ This attribute changes $|.
 =item rotationtime: Int
 
 The time between log file generates in seconds. Default value is 1.
+
+=item symlink: Str
+
+generate symlink file for log file.
 
 =back
 
