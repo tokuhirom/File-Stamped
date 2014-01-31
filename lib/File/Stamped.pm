@@ -6,6 +6,8 @@ our $VERSION = '0.03';
 use Carp ();
 use POSIX ();
 use SelectSaver ();
+use File::Path ();
+use File::Basename ();
 
 sub new {
     my $class = shift;
@@ -25,6 +27,7 @@ sub new {
         iomode            => '>>:utf8',
         rotationtime      => 1,
         callback          => $callback,
+        auto_make_dir     => 0,
         %args,
     );
     for my $k (keys %args) {
@@ -67,6 +70,9 @@ sub _output {
     my ($self, $callback) = @_;
 
     my $fname = $self->_gen_filename();
+    if (*$self->{auto_make_dir}) {
+        File::Path::make_path(File::Basename::dirname($fname));
+    }
     my $fh;
     if (*$self->{fh}) {
         if ($fname eq *$self->{fname} && *$self->{pid}==$$) {
@@ -208,6 +214,10 @@ This attribute changes $|.
 =item rotationtime: Int
 
 The time between log file generates in seconds. Default value is 1.
+
+=item auto_make_dir: Bool
+
+If this attribute is true, auto make directry of log file. Default value is false.
 
 =back
 
