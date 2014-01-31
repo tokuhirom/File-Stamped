@@ -13,8 +13,15 @@ pm_to_blib
 blib/
 META.yml
 MYMETA.*
-META.json
 META.yml
 README
 ^inc/
 File-Stamped-*/
+/File-Stamped-*
+/.build
+/_build_params
+/Build
+/Build.bat
+!Build/
+!META.json
+!LICENSE
