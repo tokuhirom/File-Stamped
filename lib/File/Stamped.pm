@@ -234,15 +234,13 @@ This attribute changes $|.
 
 The time between log file generates in seconds. Default value is 1.
 
-<<<<<<< HEAD
 =item auto_make_dir: Bool
 
 If this attribute is true, auto make directry of log file. Default value is false.
-=======
+
 =item symlink: Str
 
 generate symlink file for log file.
->>>>>>> gen-symlink
 
 =back
 
