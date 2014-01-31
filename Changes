@@ -2,6 +2,11 @@ Revision history for Perl extension File::Stamped
 
 {{$NEXT}}
 
+0.05 2014-01-31T11:13:28Z
+
+    [MISC]
+    - fixed docs
+
 0.04 2014-01-31T11:06:48Z
 
     [NEW FEATURE]

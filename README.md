@@ -69,15 +69,13 @@ You can use "myapp.log.%Y%m%d.log" style log file.
 
         The time between log file generates in seconds. Default value is 1.
 
-        <<<<<<< HEAD
-        =item auto\_make\_dir: Bool
+    - auto\_make\_dir: Bool
 
         If this attribute is true, auto make directry of log file. Default value is false.
-        =======
-        =item symlink: Str
+
+    - symlink: Str
 
         generate symlink file for log file.
-        \>>>>>>> gen-symlink
 
 - $fh->print($str: Str)
 
