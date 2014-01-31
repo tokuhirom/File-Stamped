@@ -81,9 +81,7 @@ You can use "myapp.log.%Y%m%d.log" style log file.
 
     This method prints the $str to the file.
 
-- $fh->syswrite($str: Str)
-=item $fh->syswrite($str: Str, $len: Int)
-=item $fh->syswrite($str: Str, $len: Int, $offset: Int)
+- $fh->syswrite($str: Str \[, $len: Int, $offset: Int\])
 
     This method prints the $str to the file.
     This method uses syswrite internally. Writing is not buffered.
