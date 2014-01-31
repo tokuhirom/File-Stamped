@@ -2,6 +2,16 @@ Revision history for Perl extension File::Stamped
 
 {{$NEXT}}
 
+0.04 2014-01-31T11:06:48Z
+
+    [NEW FEATURE]
+    - generate symlink.
+    - auto make parent directory for log file.
+    - be able to use syswrite
+
+    [MISC]
+    - switched to Minilla from M::B.
+
 0.03 2013-01-20T18:59:22
 
     [NEW FEATURE]
