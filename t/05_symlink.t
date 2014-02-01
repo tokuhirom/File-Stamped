@@ -6,6 +6,8 @@ use File::Spec;
 use File::Stamped;
 use File::Basename;
 
+plan skip_all => 'This environment does not support a symlink' unless eval { symlink '',''; 1 };
+
 my $dir = tempdir(CLEANUP => 1);
 my $pattern = File::Spec->catdir($dir, 'foo.%Y%m%d.log');
 my $symlink = File::Spec->catdir($dir, 'symlink.log');
