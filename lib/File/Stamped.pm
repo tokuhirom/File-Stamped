@@ -18,7 +18,7 @@ sub new {
     unless (exists($args{pattern}) || exists($args{callback})) {
         Carp::croak "You need to specify 'pattern' or 'callback'.";
     }
-    if (defined $args{symlink} && -e $args{symlink} && ! -l _) {
+    if (defined $args{symlink} && ! -l $args{symlink} && -e _) {
         Carp::croak "File '$args{symlink}' already exists (not a symlink)"; 
     }
     my $callback = delete($args{callback}) || _make_callback_from_pattern(delete($args{pattern}));
