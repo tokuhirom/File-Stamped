@@ -28,7 +28,7 @@ You can use "myapp.log.%Y%m%d.log" style log file.
 
     This method creates new instance of File::Stamped. The arguments are followings.
 
-    You need to specify one of __pattern__ or __callback__.
+    You need to specify one of **pattern** or **callback**.
 
     - pattern : Str
 

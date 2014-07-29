@@ -2,6 +2,10 @@ Revision history for Perl extension File::Stamped
 
 {{$NEXT}}
 
+0.08 2014-07-29T06:00:50Z
+    [MISC]
+    - fix symlink file check at generate file (thx spiritloose)
+
 0.07 2014-03-05T07:03:01Z
     [MISC]
     - fix symlink file check.
