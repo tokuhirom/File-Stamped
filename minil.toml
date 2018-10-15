@@ -2,5 +2,5 @@ name = "File-Stamped"
 # badges = ["travis"]
 authority="cpan:TOKUHIROM"
 
-module_maker="ModuleBuildTiny"
+module_maker="ExtUtilsMakeMaker"
 
