@@ -15,8 +15,7 @@ my %WriteMakefileArgs = (
     VERSION  => '0.08',
     EXE_FILES => [glob('script/*'), glob('bin/*')],
     CONFIGURE_REQUIRES => {
-  "ExtUtils::MakeMaker" => "6.64",
-  "Module::Build::Tiny" => "0.039"
+  "ExtUtils::MakeMaker" => "6.64"
 }
 ,
     BUILD_REQUIRES     => {
