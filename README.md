@@ -88,7 +88,7 @@ You can use "myapp.log.%Y%m%d.log" style log file.
 
 # AUTHOR
 
-Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ gmail.com>
+Tokuhiro Matsuno &lt;tokuhirom AAJKLFJEF@ gmail.com>
 
 # SEE ALSO
 
