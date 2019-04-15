@@ -59,8 +59,8 @@ You can use "myapp.log.%Y%m%d.log" style log file.
 
         This is IO mode for opening file.
 
-        Default value is '>>:utf8'.  However, for perl-5.30 compatibility,
-        '>>:raw' is used for syswrite.
+        Default value is '>>:utf8'.  However, for perl-5.30 compatibility, '>>:raw' is
+        used for `syswrite`.
 
     - autoflush: Bool
 
@@ -89,7 +89,7 @@ You can use "myapp.log.%Y%m%d.log" style log file.
 
 # AUTHOR
 
-Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ gmail.com>
+Tokuhiro Matsuno &lt;tokuhirom AAJKLFJEF@ gmail.com>
 
 # SEE ALSO
 
